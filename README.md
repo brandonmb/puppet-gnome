@@ -1,4 +1,4 @@
-# puppet-ubuntu-gnome
+# puppet-gnome
 
 #### Table of Contents
 1. [Module Description - What the module does](#module-description)
