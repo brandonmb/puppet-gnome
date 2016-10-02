@@ -1,35 +1,25 @@
 # Class: gnome
 # ===========================
 #
-# Full description of class gnome here.
+# This class is the base class for the gnome module.
+# The only purpose it serves is to install the gnome desktop and
+# to make sure some needed directories exist.
 #
 # Parameters
 # ----------
 #
-# Document parameters here.
+# * `manage_package`
+# Whether or not we manage the gnome package. The default is false.
 #
-# * `sample parameter`
-# Explanation of what this parameter affects and what it defaults to.
-# e.g. "Specify one or more upstream ntp servers as an array."
-#
-# Variables
-# ----------
-#
-# Here you should define a list of variables that this module would require.
-#
-# * `sample variable`
-#  Explanation of how this variable affects the function of this class and if
-#  it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#  External Node Classifier as a comma separated list of hostnames." (Note,
-#  global variables should be avoided in favor of class parameters as
-#  of Puppet 2.6.)
+# * `package_ensure`
+# Whether to install or remove the package.
 #
 # Examples
 # --------
 #
 # @example
 #    class { 'gnome':
-#      servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+#      manage_package => true,
 #    }
 #
 # Authors
@@ -42,7 +32,14 @@
 #
 # Copyright 2016 Your name here, unless otherwise noted.
 #
-class gnome {
+class gnome(
+  $dconf_directory = $::gnome::params::dconf_directory,
+  $manage_package  = $::gnome::params::manage_package,
+  $package         = $::gnome::params::package,
+  $package_ensure  = $::gnome::params::package_ensure,
+  ) inherits gnome::params {
 
+  include '::gnome::install'
+  include '::gnome::dconf'
 
 }

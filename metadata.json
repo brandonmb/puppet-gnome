@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "brandonmb",
   "summary": "This module is intended to control gnome config file , and not run tons of execs for everything.",
-  "license": "GNU-3",
+  "license": "GPL-3.0",
   "source": "https://github.com/brandonmb/puppet-gnome",
   "project_page": "https://github.com/brandonmb/puppet-gnome",
   "issues_url": "https://github.com/brandonmb/puppet-gnome/issues",

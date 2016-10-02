@@ -1,0 +1,9 @@
+### MANAGED BY PUPPET ###
+[<%= @section %>]
+<% @settings.sort.map do |k,v|            -%>
+<%   if v == true or v == false           -%>
+<%=    k %>=<%= v                          %>
+<%   elsif ![nil, '', :undef].include?(v) -%>
+<%=    k %>='<%= v                         %>'
+<%   end                                  -%>
+<% end                                    -%>
