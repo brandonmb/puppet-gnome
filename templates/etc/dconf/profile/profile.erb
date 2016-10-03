@@ -1,0 +1,10 @@
+<%= @user_database_type -%>:<%= @user_database %>
+<% @additional_databases.sort.map do |k,v| -%>
+<%   if v.is_a?(Array) -%>
+<%     v.each do |vi| -%>
+<%=      k %>:<%= vi %>
+<%     end -%>
+<%   elsif ![nil, '', :undef].include?(v) -%>
+<%=    k %>:<%= v %>
+<%   end -%>
+<% end -%>

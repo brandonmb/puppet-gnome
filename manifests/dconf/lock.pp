@@ -35,7 +35,8 @@
 define gnome::dconf::lock(
   $database,
   $locks,
-  $priority = 00,
+  $dconf_bin = $::gnome::dconf_bin,
+  $priority  = '00',
   ) {
 
   validate_array($locks)
@@ -50,7 +51,16 @@ define gnome::dconf::lock(
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => template('gnome/etc/dconf/db/lock_file.erb');
+      content => template('gnome/etc/dconf/db/lock_file.erb'),
+      require => File["${dconf_directory}/db/${database}.d/locks"],
+      notify  => Exec["update_${name}"];
+  }
+
+
+  exec {
+    "update_${name}":
+      command     => "${dconf_bin} update",
+      refreshonly => true;
   }
 
 }

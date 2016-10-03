@@ -33,6 +33,7 @@
 # Copyright 2016 Your name here, unless otherwise noted.
 #
 class gnome(
+  $dconf_bin       = $::gnome::params::dconf_bin,
   $dconf_directory = $::gnome::params::dconf_directory,
   $manage_package  = $::gnome::params::manage_package,
   $package         = $::gnome::params::package,

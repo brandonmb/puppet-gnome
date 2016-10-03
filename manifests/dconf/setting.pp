@@ -47,7 +47,8 @@ define gnome::dconf::setting(
   $section,
   $settings,
   $create_locks = true,
-  $priority     = 00,
+  $dconf_bin    = $::gnome::dconf_bin,
+  $priority     = '00',
   ) {
 
   validate_bool($create_locks)
@@ -64,18 +65,28 @@ define gnome::dconf::setting(
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => template('gnome/etc/dconf/db/key_file.erb');
+      content => template('gnome/etc/dconf/db/key_file.erb'),
+      require => File["${dconf_directory}/db/${database}.d"];
   }
 
   if $create_locks {
 
     $locks = keys($settings) # puts keys into an array
-    $full_locks = prefix($locks, $section)
+    $full_locks = prefix($locks, "/${section}/")
 
     gnome::dconf::lock { $name:
       database => $database,
       priority => $priority,
       locks    => $full_locks,
+    }
+  }
+
+  if $create_locks == false {
+    exec {
+      'update_settings':
+        command     => "${::gnome::params::dconf_bin} update",
+        subscribe   => File["${dconf_directory}/db/${database}.d/${priority}_${name}"],
+        refreshonly => true;
     }
   }
 

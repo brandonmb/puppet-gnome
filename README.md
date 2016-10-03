@@ -29,7 +29,7 @@ There are many ways to interact with this module. Currently the 4 main classes t
 
 ### gnome::application
 
-This class controls the applications that a user sees on their desktop and in the "Activities" panel. 
+This class controls the applications that a user sees on their desktop and in the "Activities" panel.
 
 WARNING: Removing files without understanding their exact purpose is VERY dangerous.
 
@@ -58,4 +58,4 @@ https://help.gnome.org/admin/system-admin-guide/stable/dconf-lockdown.html.en
 
 ## Limitations
 
-This has only been tested with Ubuntu 16.04 and with the gnome-ubuntu-desktop package. If this works with another release PLEASE update the documentation and create a pull request.
+This has only been tested with Ubuntu 16.04 and with the ubuntu-gnome-desktop package. If this works with another release PLEASE update the documentation and create a pull request.
