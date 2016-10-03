@@ -25,12 +25,12 @@
 # Authors
 # -------
 #
-# Author Name <author@domain.com>
+# Brandon <brandonmb@github.com>
 #
 # Copyright
 # ---------
 #
-# Copyright 2016 Your name here, unless otherwise noted.
+# Copyright 2016 brandonmb, unless otherwise noted.
 #
 class gnome(
   $dconf_bin       = $::gnome::params::dconf_bin,

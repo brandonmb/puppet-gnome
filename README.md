@@ -49,7 +49,7 @@ The above creates the following:
 /etc/dconf/db/test2.d/
 /etc/dconf/db/test2.d/locks
 
-### How to use gone::dconf::profile
+### How to use gnome::dconf::profile
 
 ```puppet
 gnome::dconf::profile { 'test':

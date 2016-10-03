@@ -40,7 +40,7 @@
 # Authors
 # -------
 #
-# Author Name brandonmb
+# brandonmb
 #
 define gnome::dconf::setting(
   $database,

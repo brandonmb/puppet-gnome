@@ -22,7 +22,7 @@
 # Authors
 # -------
 #
-# Author Name <brandonmb@github.com>
+# Brandon <brandonmb@github.com>
 #
 class gnome::install(
   $package = $::gnome::package,
