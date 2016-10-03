@@ -14,16 +14,86 @@ After much digging I could not find a puppet module which controlled the actual 
 
 ## Usage
 
-There are many ways to interact with this module. Currently the 4 main classes to use are `gnome::applications`, `gnome::dconf::profiles`, `gnome::dconf::settings`, and `gnome::dconf::locks`.
+There are many ways to interact with this module. Currently the 5 main classes to use are `gnome::applications`, `gnome::dconf::database`, `gnome::dconf::profile`, `gnome::dconf::setting`, and `gnome::dconf::lock`.
+
+### Getting Started
+
+The base class, `::gnome`, is used to establish some of the building blocks. It includes `::gnome::install` and `::gnome::dconf`. `::gnome::install` does exactly what it says, installs gnome. `::gnome::dconf` creates the base directories that the
+configurations go into.
+
+This is a basic example:
+
+```puppet
+class { 'gnome':
+  manage_package  => true,
+  package         => 'super_cool_branch_of_gnome',
+  dconf_directory => '/usr/local/etc/dconf',  # Because my super cool gnome package did not super cool things.
+}
+```
 
 ### How to use gnome::application
 
-### How to use gone::dconf::profiles
+ :WIP:
 
-### How to use gnome::dconf::settings
+### How to use gnome::dconf::database
+This is a define and it is super simple. The name is the only thing you need to
+specify. This uses the name for the database related directories.
 
-### How to use gnome::dconf::locks
+```puppet
+$databases = [ 'test1', 'test2' ]
+gnome::dconf::database { $databases: }
+```
+The above creates the following:
+/etc/dconf/db/test1.d/
+/etc/dconf/db/test1.d/locks
+/etc/dconf/db/test2.d/
+/etc/dconf/db/test2.d/locks
 
+### How to use gone::dconf::profile
+
+```puppet
+gnome::dconf::profile { 'test':
+  additional_databases => {
+                            'system-db' => [ 'test1', 'test2' ],
+                          }
+}
+```
+
+### How to use gnome::dconf::setting
+All settings are controlled with this class. This is has been setup in such a way
+that there is one section per file. Some might find this annoying, but it helps
+keep things clean. By default the lock files are automatically created for each
+setting specified here. 'create_locks' would need to be set to false to override
+this behavior.
+
+```puppet
+gnome::dconf::setting { 'background':
+  database => 'test1',
+  priority => '04',
+  section  => 'org/gnome/desktop/background',
+  settings => {
+                'picture-uri'  => 'file:///usr/share/backgrounds/example.jpg',
+                'example-bool' => false,
+              }
+}
+```
+
+### How to use gnome::dconf::lock
+If you choose to manually lock certain user settings, then you can use this define.
+It requires the database define to have ran so that the needed directories get
+created. You will likely not use this class directly, and instead allow
+`::gnome::dconf::setting` to control the locks.
+
+```puppet
+gnome::dconf::lock { 'background':
+  database => 'test1',
+  priority => '04',
+  locks    => [
+                '/org/gnome/desktop/background/picture-uri',
+                '/org/gnome/desktop/background/example-bool'
+              ],
+}
+```
 
 ## Reference
 
