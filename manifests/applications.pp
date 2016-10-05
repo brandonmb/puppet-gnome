@@ -30,8 +30,6 @@ class gnome::applications(
       mode   => '0755';
   }
 
-notify{"${manage_applications}": }
-
   if $manage_applications == true {
     package{
       $apps_to_remove:
