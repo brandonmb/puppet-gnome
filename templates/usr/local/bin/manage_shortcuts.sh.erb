@@ -1,0 +1,85 @@
+#!/bin/bash
+#
+ver=1.0.0
+#
+# This script will add or remove applications from <%= @shortcut_base_dir %>
+#
+
+APP_BASE=<%= @shortcut_base_dir %>
+enable=''
+disable=''
+help=''
+files_to_disable=''
+files_to_enable=''
+
+#########################################
+# Pre checks before we do ANYTHING else #
+#########################################
+  if [[ $# -eq 0 ]] ; then
+    echo 'An option has to be specified. Use -h for help.'
+    exit 1
+  fi
+
+  while getopts 'edh' flag; do
+    case "${flag}" in
+      e) enable='true' ;;
+      d) disable='true' ;;
+      h) help='true' ;;
+      *) echo "Unexpected option, use -h"; exit 3 ;;
+    esac
+  done
+
+  if [ "$help" == 'true' ]; then
+    echo "Usage: manage_shortcuts [OPTION]..."
+    echo "This script will remove or add desktop shortcuts to <%= @shortcut_base_dir %>"
+    echo "The files are only moved, so if they do not exist then the script will fail."
+    echo $'\n'
+    echo "Options that must be specified are d, e, or h"
+    echo $'\n'
+    echo "Options"
+    echo "  -d   This switch is used to disable (move $shortcut.desktop to <%= @shortcut_base_dir %>_disabled_shortcuts) shortcuts."
+    echo "  -r   This switch is used to enable (move $shortcut.desktop from <%= @shortcut_base_dir %>_disabled_shortcuts to <%= @shortcut_base_dir %>/) shortcuts."
+    echo "  -h   Prints this help"
+    echo $'\n'
+  fi
+
+  # Make sure we pass through at least one switch
+  if [ -z "$enable" ] && [ -z "$disable" ] && [ -z "$help" ]; then
+    echo "Required, -d, -e OR -h, exiting!"
+    exit 1
+  fi
+
+#############
+# functions #
+#############
+function enable_shortcuts(){
+
+  files_to_enable=<%= @apps_to_enable %>
+
+  for app in $files_to_enable; do
+    if [ -f <%= @shortcut_base_dir -%>_disabled_shortcuts/${app} ]; then
+      mv <%= @shortcut_base_dir -%>_disabled_shortcuts/${app} <%= @shortcut_base_dir -%>/
+    fi
+  done
+}
+
+function disable_shortcuts(){
+
+  files_to_disable=<%= @apps_to_disable %>
+
+  for app in $files_to_disable; do
+    if [ -f <%= @shortcut_base_dir -%>/${app} ]; then
+      mv <%= @shortcut_base_dir -%>/${app} <%= @shortcut_base_dir -%>_disabled_shortcuts/
+    fi
+  done
+}
+
+#####################
+# Start Doing Stuff #
+#####################
+# See if the enable switch was set
+if [[ $enable == 'true' ]]; then enable_shortcuts; fi
+
+# See if the disable swtich was set
+if [[ $disable == 'true' ]]; then disable_shortcuts; fi
+

@@ -33,13 +33,23 @@
 # Copyright 2016 brandonmb, unless otherwise noted.
 #
 class gnome(
-  $dconf_bin       = $::gnome::params::dconf_bin,
-  $dconf_directory = $::gnome::params::dconf_directory,
-  $manage_package  = $::gnome::params::manage_package,
-  $package         = $::gnome::params::package,
-  $package_ensure  = $::gnome::params::package_ensure,
+  $additional_shortcuts = {},
+  $apps_to_add          = [],
+  $apps_to_disable      = '',
+  $apps_to_enable       = '',
+  $apps_to_remove       = $::gnome::params::apps_to_remove,
+  $dconf_bin            = $::gnome::params::dconf_bin,
+  $dconf_directory      = $::gnome::params::dconf_directory,
+  $manage_applications  = false,
+  $manage_shortcuts     = false,
+  $manage_package       = false,
+  $package              = $::gnome::params::package,
+  $package_ensure       = present,
+  $shortcut_base_dir    = $::gnome::params::shortcut_base_dir,
+  $shortcuts_to_remove  = [],
   ) inherits gnome::params {
 
+  include '::gnome::applications'
   include '::gnome::install'
   include '::gnome::dconf'
 
